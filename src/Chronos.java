@@ -1,9 +1,11 @@
+import java.util.concurrent.atomic.AtomicLong;
+
 public class Chronos implements Runnable {
-    private final Object lock;
+    private final AtomicLong lockCounter;
     private int period;
 
-    public Chronos(Object lock, int period) {
-        this.lock = lock;
+    public Chronos(AtomicLong lockCounter, int period) {
+        this.lockCounter = lockCounter;
         this.period = period;
     }
 
@@ -18,9 +20,10 @@ public class Chronos implements Runnable {
                 break;
             }
 
-            synchronized (lock) {
-                lock.notifyAll();
-                System.out.println("sec 1: " + (System.currentTimeMillis() - cm));
+            synchronized (lockCounter) {
+                long l = lockCounter.incrementAndGet();
+                lockCounter.notifyAll();
+                System.out.println("sec 1: " + l + " : " + (System.currentTimeMillis() - cm));
             }
         }
     }

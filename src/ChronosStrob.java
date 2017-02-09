@@ -1,10 +1,11 @@
-public class ChronosStrob implements Runnable {
-    private final Object lock;
-    private final int strob;
-    private int counter = 0;
+import java.util.concurrent.atomic.AtomicLong;
 
-    public ChronosStrob(Object lock, int strob) {
-        this.lock = lock;
+public class ChronosStrob implements Runnable {
+    private final AtomicLong lockCounter;
+    private final int strob;
+
+    public ChronosStrob(AtomicLong lockCounter, int strob) {
+        this.lockCounter = lockCounter;
         this.strob = strob;
     }
 
@@ -13,18 +14,20 @@ public class ChronosStrob implements Runnable {
         long cm = System.currentTimeMillis();
 
         while (true) {
-            synchronized (lock) {
+            long counter;
+            synchronized (lockCounter) {
                 try {
-                    lock.wait();
-                    ++counter;
+                    lockCounter.wait();
+                    counter = lockCounter.get();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-
+                    break;
                 }
             }
 
             if ((counter % strob) == 0) {
-                System.out.println("sec " + strob + ": " + (System.currentTimeMillis() - cm));
+                System.out.println("sec " + strob + ": " + counter + " : " +
+                        (System.currentTimeMillis() - cm));
             }
         }
     }
