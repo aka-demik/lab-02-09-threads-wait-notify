@@ -1,9 +1,18 @@
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * Потребитель хронометрии.
+ */
 public class ChronosStrob implements Runnable {
     private final AtomicLong lockCounter;
     private final int strob;
 
+    /**
+     * Создаёт потребителя хронометрических сигналов.
+     *
+     * @param lockCounter счетчик/хронометр используемый для тактирования.
+     * @param strob       с каким периодом выполнять действие.
+     */
     public ChronosStrob(AtomicLong lockCounter, int strob) {
         this.lockCounter = lockCounter;
         this.strob = strob;
