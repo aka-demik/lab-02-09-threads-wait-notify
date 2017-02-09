@@ -23,7 +23,7 @@ public class ChronosStrob implements Runnable {
                 }
             }
             if ((counter % strob) == 0) {
-                System.out.println("sec 5: " + (System.currentTimeMillis() - cm));
+                System.out.println("sec " + strob + ": " + (System.currentTimeMillis() - cm));
             }
         }
     }
