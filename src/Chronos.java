@@ -17,6 +17,7 @@ public class Chronos implements Runnable {
                 e.printStackTrace();
                 break;
             }
+
             synchronized (lock) {
                 lock.notifyAll();
                 System.out.println("sec 1: " + (System.currentTimeMillis() - cm));
